@@ -1,4 +1,4 @@
-package HW5;
+package hw5;
 
 public abstract class Animal {
     protected String name;

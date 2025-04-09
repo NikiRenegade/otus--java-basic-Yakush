@@ -1,4 +1,4 @@
-package HW6;
+package hw6;
 
 public class Bowl {
     private int maximumAmountFood;

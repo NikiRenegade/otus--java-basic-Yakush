@@ -1,4 +1,4 @@
-package HW5;
+package hw5;
 
 public class Horse extends Animal {
     public Horse(String name, int runSpeed, int swimSpeed, int stamina) {

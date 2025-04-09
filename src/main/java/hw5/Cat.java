@@ -1,4 +1,4 @@
-package HW5;
+package hw5;
 
 public class Cat extends Animal {
     public Cat(String name, int runSpeed, int stamina) {
