@@ -1,0 +1,5 @@
+Hello world - this is third file
+Hello word
+
+Привет мир - это третий файл
+Привет слово
