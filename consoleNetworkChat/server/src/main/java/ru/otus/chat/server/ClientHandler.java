@@ -28,6 +28,12 @@ public class ClientHandler {
                             sendMessage("/exitok");
                             break;
                         }
+                        if(message.startsWith("/w")) {
+                            var messageParse = message.split(" ");
+                            String clients = messageParse[1];
+                            String newMessage = "Приватное сообщение от пользователя " + this.getUserName() + ": " + messageParse[2];
+                            server.sendPrivateMessage(clients, newMessage);
+                        }
                     }
                     else {
                         server.broadcastMessage(userName + ": " + message);
