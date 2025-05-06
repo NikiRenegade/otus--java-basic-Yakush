@@ -32,8 +32,7 @@ public class Client {
 
                 } catch (IOException e) {
                     throw new RuntimeException(e);
-                }
-                finally {
+                } finally {
                     disconnect();
                 }
             }).start();
