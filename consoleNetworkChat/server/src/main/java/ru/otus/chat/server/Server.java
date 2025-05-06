@@ -28,24 +28,30 @@ public class Server {
             e.printStackTrace();
         }
     }
+
     public void subscribe(ClientHandler clientHandler) {
         broadcastMessage("Клиент " + clientHandler.getUserName() + " подключен");
         clients.add(clientHandler);
     }
+
     public void unsubscribe(ClientHandler clientHandler) {
         broadcastMessage("Клиент " + clientHandler.getUserName() + " отключен");
         clients.remove(clientHandler);
     }
+
     public void broadcastMessage(String message) {
         for (ClientHandler clientHandler : clients) {
             clientHandler.sendMessage(message);
         }
     }
-    public void sendPrivateMessage(String clientName, String message) {
+
+    public boolean sendPrivateMessage(String clientName, String message) {
         for (ClientHandler clientHandler : clients) {
             if (clientHandler.getUserName().equals(clientName)) {
                 clientHandler.sendMessage(message);
+                return true;
             }
         }
+        return false;
     }
 }
