@@ -13,18 +13,51 @@ public class ClientHandler {
     private DataInputStream in;
     private DataOutputStream out;
     private String userName;
+    private boolean authenticated = false;
 
     public ClientHandler(Socket socket, Server server) throws IOException {
         this.socket = socket;
         this.server = server;
         in = new DataInputStream(socket.getInputStream());
         out = new DataOutputStream(socket.getOutputStream());
-        userName = "user" + socket.getPort();
-        sendMessage("Вы подключились под ником: " + userName);
+        //     sendMessage("Вы подключились под ником: " + userName);
         new Thread(() -> {
             try {
                 System.out.println("Client connected: " + socket.getPort());
                 while (true) {
+                    sendMessage("Вы не аутентифицированы. Перед работой пройдите аутентификацию '/auth login password'" +
+                            "или зарегистрируйтесь '/reg login password username");
+                    String message = in.readUTF();
+                    if (message.startsWith("/")) {
+                        if (message.equals("/exit")) {
+                            sendMessage("/exitok");
+                            break;
+                        }
+                        if (message.startsWith("/auth ")) {
+                            String token[] = message.split(" ");
+                            if (token.length != 3) {
+                                sendMessage("Неверный формат комманды auth");
+                                continue;
+                            }
+                            if (server.getAuthenticatedProvider().authenticate(this, token[1], token[2])) {
+                                authenticated = true;
+                                break;
+                            }
+                        }
+                        if (message.startsWith("/reg ")) {
+                            String token[] = message.split(" ");
+                            if (token.length != 4) {
+                                sendMessage("Неверный формат комманды reg");
+                                continue;
+                            }
+                            if(server.getAuthenticatedProvider().registration(this, token[0], token[1], token[2])) {
+                                authenticated = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                while (authenticated) {
                     String message = in.readUTF();
                     if (message.startsWith("/")) {
                         if (message.equals("/exit")) {
@@ -70,6 +103,10 @@ public class ClientHandler {
 
     public String getUserName() {
         return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public void disconnect() {
