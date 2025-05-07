@@ -77,6 +77,18 @@ public class ClientHandler {
                                 sendMessage("Произошла ошибка! Пользователь с данным именем не найден!");
                             }
                         }
+                        if (message.startsWith("/kick")) {
+                            var kickParameters = message.split(" ");
+                            if (kickParameters.length != 2) {
+                                sendMessage("Не верный формат комманды kick");
+                                continue;
+                            }
+                            if (!server.getAuthorizationProvider().isAdmin(userName)){
+                                sendMessage("Вы не являетесь админом и не иммете права на удаления из чата других пользователей!");
+                                continue;
+                            }
+                            server.kickUser(kickParameters[1]);
+                        }
                         else {
                             sendMessage("Знак '/' преднозначен для отправки комманд. Данной команды не существует");
                         }
