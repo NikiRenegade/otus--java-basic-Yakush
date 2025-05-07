@@ -14,7 +14,7 @@ public class Client {
 
     public Client() throws IOException {
         scanner = new Scanner(System.in);
-        socket = new Socket("127.0.0.1", 8089);
+        socket = new Socket("127.0.0.1", 8087);
         out = new DataOutputStream(socket.getOutputStream());
         in = new DataInputStream(socket.getInputStream());
         try {
@@ -25,6 +25,14 @@ public class Client {
                         if (message.startsWith("/")) {
                             if (message.equals("/exitok")) {
                                 break;
+                            }
+                            if (message.startsWith("/authok ")) {
+                                System.out.println("Вы подключились под ником: " + message.split(" ")[1]);
+                                continue;
+                            }
+                            if (message.startsWith("/regok ")) {
+                                System.out.println("Вы успешно зарегистрировались и подключились под ником: " + message.split(" ")[1]);
+                                continue;
                             }
                         }
                         System.out.println(message);
