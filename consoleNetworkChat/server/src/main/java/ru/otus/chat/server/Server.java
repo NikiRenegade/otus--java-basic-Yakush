@@ -1,10 +1,8 @@
 package ru.otus.chat.server;
 
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -12,11 +10,14 @@ public class Server {
     private int port;
     private List<ClientHandler> clients;
     private AuthenticatedProvider authenticatedProvider;
+    private AuthorizationProvider authorizationProvider;
 
     public Server(int port) {
         this.clients = new CopyOnWriteArrayList<>();
         this.port = port;
-        this.authenticatedProvider = new InMemoryAuthenticatedProvider(this);
+        InMemoryProvider inMemoryProvider = new InMemoryProvider(this);
+        this.authenticatedProvider = inMemoryProvider;
+        this.authorizationProvider = inMemoryProvider;
     }
 
     public void start() {
@@ -65,8 +66,21 @@ public class Server {
         }
         return false;
     }
+    public void kickUser(String userName) {
+        for (ClientHandler client : clients) {
+            if (client.getUserName().equals(userName)) {
+                client.sendMessage("Админ отключил вас от сервера");
+                client.sendMessage("/exitok");
+                clients.remove(client);
+
+            }
+        }
+    }
 
     public AuthenticatedProvider getAuthenticatedProvider() {
         return authenticatedProvider;
+    }
+    public AuthorizationProvider getAuthorizationProvider() {
+        return authorizationProvider;
     }
 }
