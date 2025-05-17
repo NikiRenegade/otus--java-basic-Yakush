@@ -1,33 +1,22 @@
 package ru.otus.chat.server;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class InMemoryAuthenticatedProvider implements AuthenticatedProvider {
-    private class User {
-        private String login;
-        private String password;
-        private String userName;
-
-        public User(String login, String password, String userName) {
-            this.login = login;
-            this.password = password;
-            this.userName = userName;
-        }
-    }
+public class InMemoryProvider implements AuthenticatedProvider, AuthorizationProvider {
 
     private List<User> users;
     private Server server;
 
-    public InMemoryAuthenticatedProvider(Server server) {
+    public InMemoryProvider(Server server) {
         this.users = new CopyOnWriteArrayList<>();
         this.server = server;
+        User admin = new User("admin", "admin", "admin");
+        admin.setRole(Role.ADMIN);
+        users.add(admin);
         this.users.add(new User("qwe", "qwe", "qwe1"));
         this.users.add(new User("asd", "asd", "asd1"));
         this.users.add(new User("zxc", "zxc", "zxc1"));
-
-
     }
 
     @Override
@@ -38,25 +27,34 @@ public class InMemoryAuthenticatedProvider implements AuthenticatedProvider {
 
     private String getUsernameByLoginAndPassword(String login, String password) {
         for (User user : users) {
-            if (user.login.equals(login.toLowerCase()) && user.password.equals(password)) {
-                return user.userName;
+            if (user.getLogin().equals(login.toLowerCase()) && user.getPassword().equals(password)) {
+                return user.getUserName();
             }
         }
         return null;
     }
 
-    private boolean isLoginALreadyExists(String login) {
+    private boolean isLoginAlreadyExists(String login) {
         for (User user : users) {
-            if (user.login.equals(login.toLowerCase())) {
+            if (user.getLogin().equals(login.toLowerCase())) {
                 return true;
             }
         }
         return false;
     }
 
-    private boolean isUserNameALreadyExists(String userName) {
+    private boolean isUserNameAlreadyExists(String userName) {
         for (User user : users) {
-            if (user.login.equalsIgnoreCase(userName)) {
+            if (user.getUserName().equalsIgnoreCase(userName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isAdmin(String userName) {
+        for (User user : users) {
+            if (user.getUserName().equalsIgnoreCase(userName) && user.getRole().equals(Role.ADMIN)) {
                 return true;
             }
         }
@@ -97,11 +95,11 @@ public class InMemoryAuthenticatedProvider implements AuthenticatedProvider {
             clientHandler.sendMessage("Длина пароля должна быть больше 3");
             return false;
         }
-        if (isLoginALreadyExists(login)) {
+        if (isLoginAlreadyExists(login)) {
             clientHandler.sendMessage("Такой логин занят");
             return false;
         }
-        if (isUserNameALreadyExists(userName)) {
+        if (isUserNameAlreadyExists(userName)) {
             clientHandler.sendMessage("Такое имя пользователя занято ");
             return false;
         }
