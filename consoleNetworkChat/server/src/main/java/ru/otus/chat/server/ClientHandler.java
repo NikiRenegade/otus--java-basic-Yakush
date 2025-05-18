@@ -50,7 +50,7 @@ public class ClientHandler {
                                 sendMessage("Неверный формат комманды reg");
                                 continue;
                             }
-                            if(server.getAuthenticatedProvider().registration(this, token[0], token[1], token[2])) {
+                            if(server.getAuthenticatedProvider().registration(this, token[1], token[2], token[3])) {
                                 authenticated = true;
                                 break;
                             }

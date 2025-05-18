@@ -1,8 +1,12 @@
 package ru.otus.chat.server;
 
+import ru.otus.chat.server.service.PostgreUserService;
+import ru.otus.chat.server.service.UserService;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -11,13 +15,18 @@ public class Server {
     private List<ClientHandler> clients;
     private AuthenticatedProvider authenticatedProvider;
     private AuthorizationProvider authorizationProvider;
+    private UserService userService;
 
-    public Server(int port) {
+    public Server(int port) throws SQLException {
         this.clients = new CopyOnWriteArrayList<>();
         this.port = port;
-        InMemoryProvider inMemoryProvider = new InMemoryProvider(this);
-        this.authenticatedProvider = inMemoryProvider;
-        this.authorizationProvider = inMemoryProvider;
+        userService = new PostgreUserService();
+        //InMemoryProvider inMemoryProvider = new InMemoryProvider(this);
+        DataBaseProvider dataBaseProvider = new DataBaseProvider(this, userService);
+
+        this.authenticatedProvider = dataBaseProvider;
+        this.authorizationProvider = dataBaseProvider;
+
     }
 
     public void start() {
