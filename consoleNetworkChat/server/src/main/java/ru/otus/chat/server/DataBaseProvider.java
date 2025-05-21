@@ -37,7 +37,7 @@ public class DataBaseProvider implements AuthorizationProvider, AuthenticatedPro
     public boolean registration(ClientHandler clientHandler, String login, String password, String userName) {
         if (login.length() < 3) {
             clientHandler.sendMessage("Длина логина должна быть больше 3");
-
+            return false;
         }
         if (userName.length() < 3) {
             clientHandler.sendMessage("Длина имени пользователя должна быть больше 3");

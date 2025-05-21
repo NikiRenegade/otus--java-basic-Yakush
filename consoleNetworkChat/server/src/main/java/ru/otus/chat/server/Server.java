@@ -21,7 +21,6 @@ public class Server {
         this.clients = new CopyOnWriteArrayList<>();
         this.port = port;
         userService = new PostgreUserService();
-        //InMemoryProvider inMemoryProvider = new InMemoryProvider(this);
         DataBaseProvider dataBaseProvider = new DataBaseProvider(this, userService);
 
         this.authenticatedProvider = dataBaseProvider;

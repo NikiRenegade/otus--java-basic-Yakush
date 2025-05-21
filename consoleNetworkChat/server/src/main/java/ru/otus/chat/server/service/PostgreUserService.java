@@ -3,7 +3,7 @@ package ru.otus.chat.server.service;
 import javax.sql.DataSource;
 import java.sql.*;
 
-public class PostgreUserService implements UserService {
+public class PostgreUserService implements UserService, AutoCloseable {
 
     private final String DATABASE_URL = "jdbc:postgresql://localhost:5432/postgres";
     private final String USER = "postgres";
@@ -95,4 +95,10 @@ public class PostgreUserService implements UserService {
         return false;
     }
 
+    @Override
+    public void close() throws SQLException {
+        if (connection != null) {
+            connection.close();
+        }
+    }
 }
