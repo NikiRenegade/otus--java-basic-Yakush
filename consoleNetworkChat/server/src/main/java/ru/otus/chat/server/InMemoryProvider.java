@@ -1,5 +1,8 @@
 package ru.otus.chat.server;
 
+import ru.otus.chat.server.entities.Role;
+import ru.otus.chat.server.entities.User;
+
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -25,7 +28,7 @@ public class InMemoryProvider implements AuthenticatedProvider, AuthorizationPro
 
     }
 
-    private String getUsernameByLoginAndPassword(String login, String password) {
+    private String getUsernameByLoginAndPassword(String login, String password) {// не нужен
         for (User user : users) {
             if (user.getLogin().equals(login.toLowerCase()) && user.getPassword().equals(password)) {
                 return user.getUserName();
@@ -34,7 +37,7 @@ public class InMemoryProvider implements AuthenticatedProvider, AuthorizationPro
         return null;
     }
 
-    private boolean isLoginAlreadyExists(String login) {
+    private boolean isLoginAlreadyExists(String login) { // не нужен
         for (User user : users) {
             if (user.getLogin().equals(login.toLowerCase())) {
                 return true;
@@ -43,7 +46,7 @@ public class InMemoryProvider implements AuthenticatedProvider, AuthorizationPro
         return false;
     }
 
-    private boolean isUserNameAlreadyExists(String userName) {
+    private boolean isUserNameAlreadyExists(String userName) { // не нужен
         for (User user : users) {
             if (user.getUserName().equalsIgnoreCase(userName)) {
                 return true;
@@ -52,7 +55,7 @@ public class InMemoryProvider implements AuthenticatedProvider, AuthorizationPro
         return false;
     }
 
-    public boolean isAdmin(String userName) {
+    public boolean isAdmin(String userName) { // не нужен
         for (User user : users) {
             if (user.getUserName().equalsIgnoreCase(userName) && user.getRole().equals(Role.ADMIN)) {
                 return true;
@@ -63,7 +66,7 @@ public class InMemoryProvider implements AuthenticatedProvider, AuthorizationPro
 
 
     @Override
-    public boolean authenticate(ClientHandler clientHandler, String login, String password) {
+    public boolean authenticate(ClientHandler clientHandler, String login, String password) { //
         String authUsername = getUsernameByLoginAndPassword(login, password);
         if (authUsername == null) {
             clientHandler.sendMessage("Некорректный логин/пароль");
@@ -76,8 +79,6 @@ public class InMemoryProvider implements AuthenticatedProvider, AuthorizationPro
         clientHandler.setUserName(authUsername);
         server.subscribe(clientHandler);
         clientHandler.sendMessage("/authok " + authUsername);
-
-
         return true;
     }
 

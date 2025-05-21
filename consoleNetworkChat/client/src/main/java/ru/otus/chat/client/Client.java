@@ -56,7 +56,6 @@ public class Client {
             e.printStackTrace();
         }
     }
-
     public void disconnect() {
         try {
             if (in != null) {
