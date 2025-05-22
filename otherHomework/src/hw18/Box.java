@@ -6,9 +6,6 @@ import java.util.List;
 public class Box<T extends Fruit> {
     private List<T> fruits = new ArrayList<>();
 
-    private void addFruits(List<T> fruitsToAdd) {
-        fruits.addAll(fruitsToAdd);
-    }
     public void addFruit(T fruit) {
         fruits.add(fruit);
     }
@@ -23,7 +20,9 @@ public class Box<T extends Fruit> {
         return Math.abs(this.getWeight() - otherBox.getWeight()) < 0.0001f;
     }
     public void transferFruits(Box<T> otherBox) {
-        otherBox.addFruits(this.fruits);
+        for (T fruit : this.fruits) {
+            otherBox.addFruit(fruit);
+        }
         this.fruits.clear();
     }
 }
