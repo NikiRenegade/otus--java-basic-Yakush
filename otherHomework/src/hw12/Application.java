@@ -13,7 +13,7 @@ public class Application {
 
     }
     private static File[] getListTextFiles() {
-        File currentDir = new File("./src/main/java/hw12/Files");
+        File currentDir = new File("./otherHomework/src/hw12/Files");
         File[] files = currentDir.listFiles();
         System.out.println("Доступные txt файлы:");
         for (File file : files) {
