@@ -1,4 +1,4 @@
-package hw19;
+package hw20;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -23,7 +23,7 @@ public class Application {
         String result = "";
         try (BufferedReader bufferedReader =
                      new BufferedReader(new InputStreamReader(
-                             new FileInputStream("./otherHomework/src/hw19/" + fileName),
+                             new FileInputStream("./otherHomework/src/hw20/" + fileName),
                              StandardCharsets.UTF_8))) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
