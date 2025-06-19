@@ -14,7 +14,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
-        <!-- Основные аннотации и Assertions -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -22,7 +21,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Параметризованные тесты -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
@@ -30,7 +28,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Реализация (движок) для запуска -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
@@ -40,7 +37,6 @@
     </dependencies>
     <build>
         <plugins>
-            <!-- Плагин для запуска JUnit 5 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
