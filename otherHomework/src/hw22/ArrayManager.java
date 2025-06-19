@@ -28,7 +28,7 @@ public class ArrayManager {
                 return false;
             }
         }
-        return true;
+        return hasOne && hasTwo;
     }
 
 }
